@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode;
 public class ConstantsV4 {
 
     // Servo Constants
-    public static final double PINCHER_POS =  0.05;     //pincher fully opened
-    public static final double PINCHER_IDLE = 0.25;     //pincher fully closed
+    public static final double PINCHER_POS =  0.15;     //pincher fully lached
+    public static final double PINCHER_IDLE = 0.05;     //pincher fully opened
     public static final double ERECTOR_POS_DOWN =  0.9;      //erector tilted down
     public static final double ERECTOR_POS_UP =  0.1;      //erector tilted up
     public static final double ERECTOR_IDLE = 0.5;      //erector level with ground (standard)
