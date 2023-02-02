@@ -16,7 +16,7 @@ public class FiretruckV4 {
     //Define motor and servo objects used on firetruck
     private DcMotor turntable = null;
     public DcMotor tilt = null;
-    private DcMotor lift = null;
+    public DcMotor lift = null;
     private Servo pincher = null;
     private Servo erector = null;
     private CRServo drill = null;

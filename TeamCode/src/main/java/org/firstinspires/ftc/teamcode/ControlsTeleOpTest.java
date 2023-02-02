@@ -90,22 +90,7 @@ public class ControlsTeleOpTest extends LinearOpMode {
             // Combine drive and turn for blended motion. Use RobotHardware class
             robot.driveRobot(axial, lateral, yaw);
 
-            robot.firetruck.driveTurntable(gamepad2.left_stick_x * ConstantsV4.TURNTABLE_POW);
-            if(gamepad2.left_stick_y < 0){
-                robot.firetruck.driveLift(-gamepad2.left_stick_y * ConstantsV4.LIFT_UP_POW);
-            } else if(gamepad2.left_stick_y > 0){
-                robot.firetruck.driveLift(-gamepad2.left_stick_y * -ConstantsV4.LIFT_DOWN_POW);
-            } else {
-                //robot.firetruck.driveLift(0);
-                robot.firetruck.liftIdle(ConstantsV4.LIFT_IDLE_POW);
-            }
-            if(gamepad2.right_stick_y < 0){
-                robot.firetruck.driveTilt(-gamepad2.right_stick_y * -ConstantsV4.TILT_DOWN_POW);
-            } else if(gamepad2.right_stick_y > 0){
-                robot.firetruck.driveTilt(-gamepad2.right_stick_y * ConstantsV4.TILT_UP_POW);
-            } else {
-                robot.firetruck.tiltIdle(ConstantsV4.TILT_IDLE_POW);
-            }
+
             /*
             if(gamepad1.y) {
                 erectorAcc += 0.01;
@@ -202,19 +187,40 @@ public class ControlsTeleOpTest extends LinearOpMode {
                 robot.firetruck.stopDrill();
             }
             */
+            robot.firetruck.driveTurntable(gamepad2.left_stick_x * ConstantsV4.TURNTABLE_POW);
             if(gamepad2.dpad_down){
-                robot.firetruck.setTilt(0,ConstantsV4.TILT_IDLE_POW);
                 robot.firetruck.setLift(0,ConstantsV4.LIFT_IDLE_POW);
+                if(robot.firetruck.lift.getCurrentPosition()<300) {
+                    robot.firetruck.setTilt(0, ConstantsV4.TILT_IDLE_POW);
+                }
                 //robot.firetruck.setErectorToIdle();
-                robot.firetruck.setPincherToIdle();
+
+                //robot.firetruck.setPincherToIdle();
+            } else {
+                if (gamepad2.left_stick_y < 0) {
+                    robot.firetruck.driveLift(-gamepad2.left_stick_y * ConstantsV4.LIFT_UP_POW);
+                } else if (gamepad2.left_stick_y > 0) {
+                    robot.firetruck.driveLift(-gamepad2.left_stick_y * -ConstantsV4.LIFT_DOWN_POW);
+                } else {
+                    //robot.firetruck.driveLift(0);
+                    robot.firetruck.liftIdle(ConstantsV4.LIFT_IDLE_POW);
+                }
+                if (gamepad2.right_stick_y < 0) {
+                    robot.firetruck.driveTilt(-gamepad2.right_stick_y * -ConstantsV4.TILT_DOWN_POW);
+                } else if (gamepad2.right_stick_y > 0) {
+                    robot.firetruck.driveTilt(-gamepad2.right_stick_y * ConstantsV4.TILT_UP_POW);
+                } else {
+                    robot.firetruck.tiltIdle(ConstantsV4.TILT_IDLE_POW);
+                }
             }
 
             // Manually resets the motor encoders such that the current position becomes the zero point
             if(gamepad2.dpad_up){
                 robot.firetruck.tilt.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.firetruck.tilt.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            }
+                robot.firetruck.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+                //robot.firetruck.tilt.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
             // Send telemetry messages to explain controls and show robot status
             telemetry.addData("Erector", robot.firetruck.getErectorPos());
             telemetry.addData("Drive", "Left Stick");
@@ -225,7 +231,8 @@ public class ControlsTeleOpTest extends LinearOpMode {
             telemetry.addData("Strafe Power", "%.2f", lateral);
             telemetry.addData("Tilt position", robot.firetruck.tilt.getCurrentPosition());
             telemetry.addData("Tilt target", robot.firetruck.tilt.getTargetPosition());
-            telemetry.addData("Lift position", robot.firetruck.tilt.getCurrentPosition());
+            telemetry.addData("Lift position", robot.firetruck.lift.getCurrentPosition());
+            telemetry.addData("Lilt target", robot.firetruck.lift.getTargetPosition());
             telemetry.addData("Erector Accumulator", "%.2f", erectorAcc);
             telemetry.update();
 
